@@ -1,2 +1,16 @@
 server:
-  port: 9091
+  port: 9090
+
+scalar:
+  enabled: true
+  url: /v3/api-docs
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/istad_micro
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false

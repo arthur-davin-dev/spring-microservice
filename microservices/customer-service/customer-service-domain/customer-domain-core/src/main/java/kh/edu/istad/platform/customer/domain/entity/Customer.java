@@ -13,8 +13,8 @@ public class Customer extends AggregateRoot<CustomerId> {
     private final String username;
     private String familyName;
     private String givenName;
-    private final Email email;
-    private final PhoneNumber phoneNumber;
+    private Email email;
+    private PhoneNumber phoneNumber;
     private CustomerStatus status;
 
     // Domain Critical Logic
@@ -33,12 +33,14 @@ public class Customer extends AggregateRoot<CustomerId> {
         }
     }
 
-    public void updateCustomer(String familyName, String givenName) {
-        if (familyName == null || givenName == null) {
-            throw new CustomerDomainException("familyName and givenName must not be null");
+    public void updateCustomer(String familyName, String givenName, Email email, PhoneNumber phoneNumber) {
+        if (familyName == null || givenName == null || email == null || phoneNumber == null) {
+            throw new CustomerDomainException("Customer update fields must not be null");
         }
         this.familyName = familyName;
         this.givenName = givenName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
     }
 
     public void deactivateCustomer() {

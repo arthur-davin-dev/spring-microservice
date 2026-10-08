@@ -7,6 +7,8 @@ import kh.edu.istad.platform.customer.domain.event.CustomerUpdatedEvent;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import kh.edu.istad.platform.customer.domain.valueobject.Email;
+import kh.edu.istad.platform.customer.domain.valueobject.PhoneNumber;
 
 public class CustomerDomainServiceImpl implements CustomerDomainService{
 
@@ -17,8 +19,8 @@ public class CustomerDomainServiceImpl implements CustomerDomainService{
     }
 
     @Override
-    public CustomerUpdatedEvent updateCustomer(Customer customer) {
-        customer.updateCustomer(customer.getFamilyName(), customer.getGivenName());
+    public CustomerUpdatedEvent updateCustomer(Customer customer, String familyName, String givenName, Email email, PhoneNumber phoneNumber) {
+        customer.updateCustomer(familyName, givenName, email, phoneNumber);
         return new CustomerUpdatedEvent(customer, ZonedDateTime.now(ZoneId.of("UTC")));
     }
 

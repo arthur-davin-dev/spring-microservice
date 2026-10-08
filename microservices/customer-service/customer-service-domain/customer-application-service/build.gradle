@@ -3,5 +3,6 @@ plugins {
 }
 
 dependencies {
-    api 'kh.edu.istad:customer-domain-core'
+    api project(':customer-service-domain:customer-domain-core')
+    implementation 'org.springframework:spring-tx'
 }

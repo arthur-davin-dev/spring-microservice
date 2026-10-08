@@ -1,8 +1,10 @@
+
 plugins {
     id 'spring-common-conventions'
 }
 
 dependencies {
-    api 'kh.edu.istad:customer-application-service'
+    api project(':customer-service-domain:customer-application-service')
+    implementation 'kh.edu.istad:istad-common-restapi'
     implementation 'org.springframework.boot:spring-boot-starter-webmvc'
 }

@@ -3,12 +3,14 @@ package kh.edu.istad.platform.customer.domain.usecase;
 import kh.edu.istad.platform.customer.domain.dto.InitiateCustomerCommand;
 import kh.edu.istad.platform.customer.domain.dto.InitiateCustomerResult;
 import kh.edu.istad.platform.customer.domain.entity.Customer;
+import kh.edu.istad.platform.customer.domain.exception.CustomerDomainException;
+import kh.edu.istad.platform.customer.domain.port.out.CustomerRepository;
 import kh.edu.istad.platform.customer.domain.service.CustomerDomainService;
+import kh.edu.istad.platform.customer.domain.valueobject.Email;
+import kh.edu.istad.platform.customer.domain.valueobject.PhoneNumber;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
-import java.util.UUID;
 
 @Component
 @Slf4j
@@ -16,14 +18,35 @@ import java.util.UUID;
 public class InitiateCustomerUseCase {
 
     private final CustomerDomainService customerDomainService;
+    private final CustomerRepository customerRepository;
 
     public InitiateCustomerResult execute(InitiateCustomerCommand command) {
         log.info("initiate customer usecase: {}", command);
-        // validate by load data from persistence (output port)
-        // invoke domain logic (called domain service)
-        //customerDomainService.initiateCustomer(customer);
-        // save data into database (output port)
-        return new InitiateCustomerResult(UUID.randomUUID());
+        if (customerRepository.existsByUsername(command.username())) {
+            throw new CustomerDomainException("Username is already in use");
+        }
+        if (customerRepository.existsByEmail(command.email())) {
+            throw new CustomerDomainException("Email is already in use");
+        }
+
+        Customer customer = Customer.builder()
+                .username(command.username())
+                .familyName(command.familyName())
+                .givenName(command.givenName())
+                .email(new Email(command.email()))
+                .phoneNumber(new PhoneNumber(command.phoneNumber()))
+                .build();
+
+        customerDomainService.initiateCustomer(customer);
+        Customer savedCustomer = customerRepository.save(customer);
+        return new InitiateCustomerResult(
+                savedCustomer.getId().value(),
+                savedCustomer.getUsername(),
+                savedCustomer.getFamilyName(),
+                savedCustomer.getGivenName(),
+                savedCustomer.getEmail().value(),
+                savedCustomer.getPhoneNumber().value()
+        );
     }
 
 }
