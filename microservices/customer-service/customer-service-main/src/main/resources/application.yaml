@@ -6,11 +6,5 @@ scalar:
   url: /v3/api-docs
 
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5433/istad_micro
-    username: postgres
-    password: postgres
-  jpa:
-    hibernate:
-      ddl-auto: update
-    open-in-view: false
+  mongodb:
+    uri: mongodb://mongod:mongod@localhost:2026/db_customer?authSource=admin

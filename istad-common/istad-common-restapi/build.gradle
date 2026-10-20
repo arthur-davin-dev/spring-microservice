@@ -12,6 +12,7 @@ repositories {
 dependencies {
     api 'kh.edu.istad:istad-common-domain'
     implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+    // @Transactional
     implementation 'org.springframework:spring-tx'
     testImplementation platform('org.junit:junit-bom:6.0.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
